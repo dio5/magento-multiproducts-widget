@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Dio5_Multiproducts>
+            <version>0.1.0</version>
+        </Dio5_Multiproducts>
+    </modules>
+    <global>
+        <blocks>
+            <multiproducts>
+                <class>Dio5_Multiproducts_Block</class>
+            </multiproducts>
+        </blocks>
+         <helpers>
+            <multiproducts>
+                <class>Dio5_Multiproducts_Helper</class>
+            </multiproducts>
+        </helpers>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <dio5_multiproducts before="Mage_Adminhtml">Dio5_Multiproducts_Adminhtml</dio5_multiproducts>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+</config>

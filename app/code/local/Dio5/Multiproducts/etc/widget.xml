@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<widgets>
+    <multiproducts type="multiproducts/catalog_product_widget_multiproducts" module="multiproducts">
+        <name>Multi Products</name>
+        <description>Select multiple products for display</description>
+        <parameters>
+            <title translate="label">
+                <visible>1</visible>
+                <label>Title</label>
+                <type>text</type>
+            </title>
+            <ids translate="label">
+                <visible>1</visible>
+                <required>1</required>
+                <label>Products</label>
+                <type>label</type>
+                <helper_block>
+                    <type>multiproducts/adminhtml_catalog_product_widget_chooser</type>
+                    <data>
+                        <button translate="open">
+                            <open>Select Products...</open>
+                        </button>
+                    </data>
+                </helper_block>
+                <sort_order>10</sort_order>
+            </ids>
+            <template>
+                <required>1</required>
+                <visible>1</visible>
+                <label>Template</label>
+                <type>select</type>
+                <value>catalog/product/widget/multiproducts/content/multiproducts_grid.phtml</value>
+                <values>
+                    <default translate="label">
+                        <value>catalog/product/widget/multiproducts/content/multiproducts_grid.phtml</value>
+                        <label>Multi Products Grid Template</label>
+                    </default>
+                    <list translate="label">
+                        <value>catalog/product/widget/multiproducts/content/multiproducts_list.phtml</value>
+                        <label>Multi Products List Template</label>
+                    </list>
+                </values>
+            </template>       
+        </parameters>        
+    </multiproducts>
+</widgets>
