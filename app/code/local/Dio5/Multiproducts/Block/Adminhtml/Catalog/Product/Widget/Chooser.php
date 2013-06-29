@@ -193,7 +193,7 @@ if(element.checked)
 });
 {jsObject}.removeValue = function(value){
     var currentValue =  ' . $chooserJsObject . '.getElementValue();
-    currentValue =currentValue.replace("{"+value+"}", "");
+    currentValue =  currentValue.replace("{"+value+"}", "");
      ' . $chooserJsObject . '.setElementValue(currentValue);
 }
 {jsObject}.addValue = function(value){
@@ -209,20 +209,20 @@ if(element.checked)
 }
 {jsObject}.addLabel = function(label){
     var currentLabel = ' . $chooserJsObject . '.getElementLabelText();
-        if(currentLabel.search("ul") != -1){
-            currentLabel = currentLabel.replace("</ul>", "");
-            currentLabel = currentLabel.replace("<li>"+label+"</li>", "");
-        }
-        else{
-            currentLabel = "<ul>";
-        }    
-        currentLabel = currentLabel +"<li>"+label+"</li></ul>";
-     ' . $chooserJsObject . '.setElementLabel(currentLabel);
+    if(currentLabel.search("ul") != -1){
+        currentLabel = currentLabel.replace("</ul>", "");
+        currentLabel = currentLabel.replace("<li>"+label+"</li>", "");
+    }
+    else{
+        currentLabel = "<ul>";
+    }    
+    currentLabel = currentLabel +"<li>"+label+"</li></ul>";
+    ' . $chooserJsObject . '.setElementLabel(currentLabel);
 }
 
-        {jsObject}.doChoose = function(node,e){        
-            ' . $chooserJsObject . '.close();
-        }           
+    {jsObject}.doChoose = function(node,e){        
+        ' . $chooserJsObject . '.close();
+    }           
 ';
         $js = str_replace('{jsObject}', $this->getJsObjectName(), $js);
         return $js;
