@@ -60,15 +60,23 @@ Mage_Adminhtml_Block_Catalog_Product_Widget_Chooser {
                 ->setFieldsetId($this->getFieldsetId())
                 ->setSourceUrl($sourceUrl)
                 ->setUniqId($uniqId);
-        
+
         if ($element->getValue()) {
             $label = "";
-            $ids = explode(',', $element->getValue());
-            $products = $this->_getProductsByIDs($ids);
+            $ids = explode('}{', $element->getValue());
+            $cleanIds = array();
+            foreach ($ids as $id) {
+                $id = str_replace('{', '', $id);
+                $id = str_replace('}', '', $id);
+                $cleanIds[] = $id;
+            }
+            $products = $this->_getProductsByIDs($cleanIds);
             if ($products) {
+                $label .= '<ul>';
                 foreach ($products as $product) {
-                    $label .= $product->getName(). '<br />';                    
+                    $label .= '<li>' . $product->getName() . '</li>';
                 }
+                $label .= '</ul>';
                 $chooser->setLabel($label);
             }
         }
@@ -95,7 +103,7 @@ Mage_Adminhtml_Block_Catalog_Product_Widget_Chooser {
     public function getCheckboxCheckCallback() {
         if ($this->getUseMassaction()) {
             return "function (grid, element) {
-                $(grid.containerId).fire('product:changed', {element: element});
+                $(grid.containerId).fire('product:changed', {element: element});                 
             }";
         }
     }
@@ -147,29 +155,73 @@ Mage_Adminhtml_Block_Catalog_Product_Widget_Chooser {
         return $js;
     }
 
+    public function canDisplayContainer() {
+        return true;
+    }
+
     /**
      * 
      */
     public function getAdditionalJavascript() {
         $chooserJsObject = $this->getId();
-        $js = '
-        {jsObject}.doChoose = function(node,e){
-            var checked = $$("#' . $chooserJsObject . '_table tbody input:checkbox[name=in_products]:checked");
-            if(checked.length){
-            var values = "";
-            var labels = "";
-            for(var i = 0; i<checked.length; i++){
-                if(i > 0) {
-                    values += ",";
-                    labels += "<br />";
-                }
-                values += checked[i].value;                
-                labels += checked[i].up("td").next().next().next().innerHTML;
+        $js = '    
+            {jsObject}.initChecked = function(){
+            $$("#' . $chooserJsObject . '_table tbody input:checkbox").each(function(element, i){
+                var values = ' . $chooserJsObject . '.getElementValue();
+                    var capture = values.replace("{"+element.value+"}", "match");                    
+                    var searchValue = "match";
+                if(capture.search(searchValue) != -1){
+                    element.checked = true;
+               }
+            });
             }
-            ' . $chooserJsObject . '.setElementLabel(labels);
-            ' . $chooserJsObject . '.setElementValue(values);
+            {jsObject}.initChecked();              
+            $$("#' . $chooserJsObject . '_table tbody input:checkbox").invoke("observe", "change", function(event){
+                var element = Event.element(event);
+                var label = element.up("td").next().next().next().innerHTML;
+                label = label.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
+if(element.checked)
+    {
+        {jsObject}.addValue(element.value);
+        {jsObject}.addLabel(label);
+    }
+    else
+    {
+        {jsObject}.removeValue(element.value);
+        {jsObject}.removeLabel(label);
+    }                    
+});
+{jsObject}.removeValue = function(value){
+    var currentValue =  ' . $chooserJsObject . '.getElementValue();
+    currentValue =currentValue.replace("{"+value+"}", "");
+     ' . $chooserJsObject . '.setElementValue(currentValue);
+}
+{jsObject}.addValue = function(value){
+    var currentValue = ' . $chooserJsObject . '.getElementValue();
+    currentValue = currentValue.replace("{"+value+"}", "");
+    currentValue = currentValue + "{"+value+"}";
+     ' . $chooserJsObject . '.setElementValue(currentValue);
+}
+{jsObject}.removeLabel = function(label){
+    var currentLabel =  ' . $chooserJsObject . '.getElementLabelText();
+    currentLabel = currentLabel.replace("<li>"+label+"</li>", "");
+     ' . $chooserJsObject . '.setElementLabel(currentLabel);         
+}
+{jsObject}.addLabel = function(label){
+    var currentLabel = ' . $chooserJsObject . '.getElementLabelText();
+        if(currentLabel.search("ul") != -1){
+            currentLabel = currentLabel.replace("</ul>", "");
+            currentLabel = currentLabel.replace("<li>"+label+"</li>", "");
+        }
+        else{
+            currentLabel = "<ul>";
+        }    
+        currentLabel = currentLabel +"<li>"+label+"</li></ul>";
+     ' . $chooserJsObject . '.setElementLabel(currentLabel);
+}
+
+        {jsObject}.doChoose = function(node,e){        
             ' . $chooserJsObject . '.close();
-          }           
         }           
 ';
         $js = str_replace('{jsObject}', $this->getJsObjectName(), $js);

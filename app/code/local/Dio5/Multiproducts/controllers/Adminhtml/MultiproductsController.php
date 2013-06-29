@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class Dio5_Multiproducts_Adminhtml_MultiproductsController extends Mage_Adminhtml_Controller_Action
 {
