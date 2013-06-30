@@ -6,9 +6,15 @@ class Dio5_Multiproducts_Block_Catalog_Product_Widget_Multiproducts extends Mage
 
         $ids = $this->getData('ids');
         if ($ids) {
-            $ids = explode(',', $ids);
-            if (count($ids)) {
-                $products = $this->_getProductsByIDs($ids);
+            $ids = explode('}{', $ids);
+            $cleanIds = array();
+            foreach ($ids as $id) {
+                $id = str_replace('{', '', $id);
+                $id = str_replace('}', '', $id);
+                $cleanIds[] = $id;
+            }
+            if (count($cleanIds)) {
+                $products = $this->_getProductsByIDs($cleanIds);
                 if ($products) {
                     $this->setProductCollection($products);
                 }
