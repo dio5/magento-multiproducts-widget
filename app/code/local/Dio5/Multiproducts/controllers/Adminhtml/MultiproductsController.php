@@ -10,7 +10,6 @@ class Dio5_Multiproducts_Adminhtml_MultiproductsController extends Mage_Adminhtm
         $uniqId = $this->getRequest()->getParam('uniq_id');
         $massAction = $this->getRequest()->getParam('use_massaction', false);
         $productTypeId = $this->getRequest()->getParam('product_type_id', null);
-
         $productsGrid = $this->getLayout()->createBlock('multiproducts/adminhtml_catalog_product_widget_chooser', '', array(
             'id'                => $uniqId,
             'use_massaction' => $massAction,

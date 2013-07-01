@@ -175,7 +175,9 @@ Mage_Adminhtml_Block_Catalog_Product_Widget_Chooser {
                }
             });
             }
-            {jsObject}.initChecked();              
+            {jsObject}.initChecked();      
+              var values = ' . $chooserJsObject . '.getElementValue();
+             $("' . $chooserJsObject . '").insert({bottom: "<div class=\"filter\"><input type=\"hidden\" value="+values+" name=\"selected_products\" /></div>"});
             $$("#' . $chooserJsObject . '_table tbody input:checkbox").invoke("observe", "change", function(event){
                 var element = Event.element(event);
                 var label = element.up("td").next().next().next().innerHTML;
@@ -353,10 +355,24 @@ if(element.checked)
      * @return array
      */
     public function getSelectedProducts() {
-        if ($selectedProducts = $this->getRequest()->getParam('selected_products', null)) {
-            $this->setSelectedProducts($selectedProducts);
+        if ($this->getRequest()->getParam('filter')) {
+            $filter = base64_decode($this->getRequest()->getParam('filter'));
+            $filterBag = explode('&', $filter);
+            $filters = array();
+            foreach ($filterBag as $subfilter) {
+                $subfilter = explode('=', $subfilter);
+                $filters[$subfilter[0]] = $subfilter[1];
+            }
+            if (array_key_exists("in_products", $filters)) {
+                $selectedProducts = $filters['selected_products'];
+                $selectedProducts = urldecode($selectedProducts);
+                $selectedProducts = str_replace('{', '', $selectedProducts);
+                $selectedProducts = str_replace('}', ',', $selectedProducts);
+                $selectedProducts = explode(',', $selectedProducts);
+                $this->setSelectedProducts($selectedProducts);
+            }
+            return $this->_selectedProducts;
         }
-        return $this->_selectedProducts;
     }
 
 }
