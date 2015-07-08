@@ -1,0 +1,19 @@
+{
+    "name": "dio5/magento-multiproducts-widget",
+    "license": "GPL-3.0+",
+    "type": "magento-module",
+    "description": "Multiselect product widget chooser",
+    "keywords": ["widget", "magento", "multiselect"],
+    "homepage": "",
+    "authors": [
+        {
+            "name": "dio5/magento-multiproducts-widget",
+            "email": "dio5",
+            "homepage": "https://github.com/dio5/magento-multiproducts-widget",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "magento-hackathon/magento-composer-installer": "dev-master"
+    }
+}
