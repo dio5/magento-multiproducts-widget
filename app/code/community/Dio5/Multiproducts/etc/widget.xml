@@ -39,6 +39,10 @@
                         <value>catalog/product/widget/multiproducts/content/multiproducts_list.phtml</value>
                         <label>Multi Products List Template</label>
                     </list>
+                    <standard_list translate="label">
+                        <value>catalog/product/list.phtml</value>
+                        <label>Default Magento List Template</label>
+                    </standard_list>
                 </values>
             </template>       
         </parameters>        
