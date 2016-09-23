@@ -34,4 +34,9 @@ class Dio5_Multiproducts_Adminhtml_MultiproductsController extends Mage_Adminhtm
 
         $this->getResponse()->setBody($html);
     }
+
+    protected function _isAllowed() {
+        return Mage::getSingleton('admin/session')->isAllowed('cms/widget_instance');
+    }
+
 }
