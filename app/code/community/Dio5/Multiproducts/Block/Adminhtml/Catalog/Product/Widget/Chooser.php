@@ -13,6 +13,7 @@ Mage_Adminhtml_Block_Catalog_Product_Widget_Chooser {
     public function __construct($arguments = array()) {
         parent::__construct($arguments);
         $this->setUseMassaction(true);
+        $this->setUseAjax(true);
     }
 
     protected function _prepareLayout() {
@@ -80,7 +81,7 @@ Mage_Adminhtml_Block_Catalog_Product_Widget_Chooser {
                 $chooser->setLabel($label);
             }
         }
-        $element->setData('after_element_html', $chooser->toHtml());
+        $element->setData('after_element_html', html_entity_decode($chooser->toHtml()));
         return $element;
     }
 
